@@ -6,7 +6,10 @@ const template = document.querySelector("#list-item-template");
 const form = document.querySelector("#new-todo-form");
 const todoInput = document.querySelector("#todo-input");
 const list = document.querySelector("#list");
-const todos = [];
+// Store user input into this empty array
+// const todos = [];
+const todos = loadTodos();
+todos.forEach((todo) => renderTodo(todo));
 
 // Add todos
 form.addEventListener("submit", (e) => {
@@ -46,10 +49,19 @@ function renderTodo(todoName) {
 
 // Delete todos
 // Complete todos
-// Save todos; convert todos from a JSON array into a string with JSON.stringify()
-function saveTodos(todos) {
-  localStorage.setItem(`${TODOS_STORAGE_KEY}`, JSON.stringify(todos));
-  // localStorage.clear();
-}
 
 // Load todos
+function loadTodos() {
+  const todosString = localStorage.getItem(TODOS_STORAGE_KEY);
+  // Take a string and convert it to a JavaScript object or array (here: array)
+  // On the first load of the page => todosString is undefined, in this case
+  // we return an empty string
+  return JSON.parse(todosString) || [];
+}
+
+// Save todos
+function saveTodos(todos) {
+  // Convert todos from a JSON array into a string with JSON.stringify()
+  // Save todos into local storage
+  localStorage.setItem(`${TODOS_STORAGE_KEY}`, JSON.stringify(todos));
+}
